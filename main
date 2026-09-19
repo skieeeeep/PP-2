@@ -38,5 +38,11 @@ int main() {
         std::cerr << e.what() << '\n';
         return 1;
     }
-
 }
+
+bool task::isInside(double x, double y, double r) {
+    double dx = r - x;
+    double dy = r - y;
+    return dx * dx + dy * dy <= r * r;
+}
+
