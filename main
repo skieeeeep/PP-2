@@ -46,3 +46,17 @@ bool task::isInside(double x, double y, double r) {
     return dx * dx + dy * dy <= r * r;
 }
 
+size_t task::math(double r, size_t tests, size_t seed) {
+    std::default_random_engine engine (seed);
+    std::uniform_real_distribution< double > dist(0.0, 2.0 * r);
+
+    size_t res = 0;
+    for (size_t i = 0; i < tests; ++i) {
+        double x = dist(engine);
+        double y = dist(engine);
+        if (isInside(x, y, r)) {
+            ++res;
+        }
+    }
+    return res;
+}
