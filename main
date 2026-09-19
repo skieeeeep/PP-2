@@ -60,3 +60,16 @@ size_t task::math(double r, size_t tests, size_t seed) {
     }
     return res;
 }
+
+void* task::threadAdapter(void* data)
+{
+    ThreadData* tdata = static_cast< ThreadData* >(data);
+    tdata->result = math(tdata->r, tdata->tests, tdata->seed);
+    return nullptr;
+}
+
+double task::area(double r, size_t threads, size_t tests) {
+    if (!threads || !tests || r <= 0.0) {
+        throw std::invalid_argument("Arguments must be greater than 0");
+    }
+}
