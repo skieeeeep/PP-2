@@ -93,4 +93,26 @@ double task::area(double r, size_t threads, size_t tests) {
         }
         throw std::system_error(err, std::generic_category(), "pthread_create failed");
     }
+
+    int firstError = 0;
+    for (size_t i = 0; i < threads; ++i) {
+        int err = pthread_join(ths[i], nullptr);
+        if (err && !firstError) {
+            firstError = err;
+        }
+    }
+
+    if (firstError) {
+        throw std::system_error(firstError, std::generic_category(), "pthread_join failed");
+    }
+
+    size_t totalInside = 0;
+    for (const ThreadData& tdata : threadsData) {
+        totalInside += tdata.result;
+    }
+
+    return 4.0 * r * r * static_cast < double >(totalInside) / static_cast< double >(tests);
 }
+
+
+
