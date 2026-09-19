@@ -1,0 +1,42 @@
+#include <cmath>
+#include <exception>
+#include <iostream>
+#include <pthread.h>
+#include <random>
+#include <stdexcept>
+#include <system_error>
+#include <vector>
+
+namespace task {
+    bool isInside(double x, double y, double r);
+    void* threadAdapter(void* data);
+    size_t math(double r, size_t tests, size_t seed);
+    double area(double r, size_t threads, size_t tests);
+
+    struct ThreadData {
+        double r = 0.0;
+        size_t tests = 0;
+        size_t seed = 0;
+        size_t result = 0;
+    };
+
+    constexpr size_t THREADS_COUNT = 10;
+}
+
+int main() {
+    double r = 0.0;
+    size_t tests = 0;
+    std::cin >> r >> tests;
+
+    try {
+        double res = task::area(r, task::THREADS_COUNT, tests);
+        std::cout << "По Монте-Карло:" << res << '\n';
+        std::cout << "По стандартной формуле" << std::acos(-1.0) * r * r << '\n';
+    }
+
+    catch (const std::exception& e) {
+        std::cerr << e.what() << '\n';
+        return 1;
+    }
+
+}
